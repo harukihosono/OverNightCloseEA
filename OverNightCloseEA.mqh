@@ -27,7 +27,6 @@
 #endif
 
 // ライブラリをインクルード
-#include "AutoTradingControl.mqh"
 #include "JapanTimeCalculator.mqh"
 #include "TimeRangeParser.mqh"
 #include "BrokerFillingMode.mqh"
@@ -52,8 +51,7 @@ enum ENUM_WEEKDAY
 enum ENUM_CLOSE_ACTION
 {
    ACTION_CLOSE_ONLY,           // 決済のみ
-   ACTION_CLOSE_AND_STOP_EA,    // 決済＋EA停止
-   ACTION_CLOSE_AND_DISABLE_AT  // 決済＋自動売買停止
+   ACTION_CLOSE_AND_STOP_EA     // 決済＋EA停止
 };
 
 //+------------------------------------------------------------------+
@@ -80,12 +78,14 @@ input bool ClosePendingOrders = true;                    // 待機注文を削�
 input int MagicNumber = 0;                               // マジックナンバー(0=全て)
 
 sinput string separator3 = "=== アクション設定 ===";      // アクション設定
-input ENUM_CLOSE_ACTION CloseAction = ACTION_CLOSE_AND_DISABLE_AT; // 決済後のアクション
+input ENUM_CLOSE_ACTION CloseAction = ACTION_CLOSE_AND_STOP_EA; // 決済後のアクション
 
 sinput string separator4 = "=== 通知設定 ===";           // 通知設定
 input bool EnableAlert = true;                           // アラート通知
 input bool EnableSound = true;                           // サウンド通知
 input string SoundFile = "alert.wav";                    // 通知サウンドファイル
+input bool EnableEmail = false;                          // メール通知
+input bool EnablePush = false;                           // プッシュ通知
 input int AlertMinutesBefore = 5;                        // 事前通知(分前)
 
 sinput string separator5 = "=== 決済設定 ===";           // 決済設定
@@ -341,14 +341,6 @@ string ErrorDescription(int error_code)
 //+------------------------------------------------------------------+
 void WCEA_Init()
 {
-   // DLL機能の確認（自動売買停止機能を使う場合のみ）
-   if(CloseAction == ACTION_CLOSE_AND_DISABLE_AT && !IsDLLAvailable())
-   {
-      Print("WARNING: DLL imports are not enabled. AutoTrading control will not work.");
-      Print("WARNING: Changing action to CLOSE_AND_STOP_EA");
-      Alert("OverNightCloseEA: DLL機能が無効です。\nアクションを「決済＋EA停止」に変更しました。");
-   }
-
    if(!ClosePositions && !ClosePendingOrders)
    {
       Print("ERROR: Both ClosePositions and ClosePendingOrders are disabled.");
@@ -582,6 +574,15 @@ void SendPreAlert(int dayOfWeek)
    if(EnableSound)
       PlaySound(SoundFile);
 
+   if(EnableEmail)
+   {
+      string subject = "OverNightCloseEA: " + IntegerToString(AlertMinutesBefore) + "分後に決済開始";
+      SendMail(subject, message);
+   }
+
+   if(EnablePush)
+      SendNotification(message);
+
    Print("===========================================");
    Print("Pre-alert sent: ", AlertMinutesBefore, " minutes before close");
    Print("Day: ", weekdayNames[dayOfWeek], " Time range: ", timeRange);
@@ -635,6 +636,15 @@ void ExecuteClose(int dayOfWeek)
    if(EnableSound)
       PlaySound(SoundFile);
 
+   if(EnableEmail)
+   {
+      string subject = "OverNightCloseEA: 決済完了";
+      SendMail(subject, message);
+   }
+
+   if(EnablePush)
+      SendNotification(message);
+
    Print("===========================================");
    Print("Time-range close completed");
    Print("Total closed: ", closedPositions, " positions, ", deletedOrders, " orders");
@@ -654,21 +664,6 @@ void ExecuteAction()
       Print("Stopping EA...");
       g_eaStopped = true;
       ExpertRemove();
-   }
-   else if(CloseAction == ACTION_CLOSE_AND_DISABLE_AT)
-   {
-      if(IsDLLAvailable())
-      {
-         Print("Disabling AutoTrading...");
-         DisableAutoTrading();
-         g_eaStopped = true;
-      }
-      else
-      {
-         Print("WARNING: DLL not available. Stopping EA instead.");
-         g_eaStopped = true;
-         ExpertRemove();
-      }
    }
    // ACTION_CLOSE_ONLY の場合は何もしない
 }
@@ -1090,7 +1085,6 @@ string GetActionName(ENUM_CLOSE_ACTION action)
    {
       case ACTION_CLOSE_ONLY:          return "Close only";
       case ACTION_CLOSE_AND_STOP_EA:   return "Close + Stop EA";
-      case ACTION_CLOSE_AND_DISABLE_AT: return "Close + Disable AutoTrading";
       default:                         return "Unknown";
    }
 }

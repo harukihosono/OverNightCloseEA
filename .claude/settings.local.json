@@ -6,7 +6,8 @@
       "Bash(rm:*)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: OverNight Close EA with all components\n\nMT4/MT5対応のオーバーナイトポジション自動決済EA。\n- メインEAファイル (mq4/mq5)\n- コアロジック (OverNightCloseEA.mqh)\n- ブローカー対応 (BrokerFillingMode.mqh)\n- 日本時間計算 (JapanTimeCalculator.mqh)\n- 時間範囲パース (TimeRangeParser.mqh)\n- 自動売買制御 (AutoTradingControl.mqh)\n- コンパイル済みバイナリ (ex4/ex5)\n- ドキュメント (README)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: OverNight Close EA with all components\n\nMT4/MT5対応のオーバーナイトポジション自動決済EA。\n- メインEAファイル (mq4/mq5)\n- コアロジック (OverNightCloseEA.mqh)\n- ブローカー対応 (BrokerFillingMode.mqh)\n- 日本時間計算 (JapanTimeCalculator.mqh)\n- 時間範囲パース (TimeRangeParser.mqh)\n- 自動売買制御 (AutoTradingControl.mqh)\n- コンパイル済みバイナリ (ex4/ex5)\n- ドキュメント (README)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
