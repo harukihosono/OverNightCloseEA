@@ -78,7 +78,7 @@ input bool ClosePendingOrders = true;                    // 待機注文を削�
 input int MagicNumber = 0;                               // マジックナンバー(0=全て)
 
 sinput string separator3 = "=== アクション設定 ===";      // アクション設定
-input ENUM_CLOSE_ACTION CloseAction = ACTION_CLOSE_AND_STOP_EA; // 決済後のアクション
+input ENUM_CLOSE_ACTION CloseAction = ACTION_CLOSE_ONLY; // 決済後のアクション
 
 sinput string separator4 = "=== 通知設定 ===";           // 通知設定
 input bool EnableAlert = true;                           // アラート通知
