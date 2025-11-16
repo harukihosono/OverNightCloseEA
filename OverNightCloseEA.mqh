@@ -58,12 +58,12 @@ enum ENUM_CLOSE_ACTION
 //| Input Parameters                                                |
 //+------------------------------------------------------------------+
 sinput string separator1 = "=== 曜日別決済時間帯設定(日本時間) ===";  // 曜日別決済時間帯設定
-input string Monday_CloseTime = "0000-0000";             // 月曜日 決済時間帯(HHMM-HHMM)
-input string Tuesday_CloseTime = "0000-0000";            // 火曜日 決済時間帯(HHMM-HHMM)
-input string Wednesday_CloseTime = "0000-0000";          // 水曜日 決済時間帯(HHMM-HHMM)
-input string Thursday_CloseTime = "0000-0000";           // 木曜日 決済時間帯(HHMM-HHMM)
-input string Friday_CloseTime = "2300-2359";             // 金曜日 決済時間帯(HHMM-HHMM)
-input string Saturday_CloseTime = "0000-0000";           // 土曜日 決済時間帯(HHMM-HHMM)
+input string Monday_CloseTime = "0455-0655";             // 月曜日 決済時間帯(HHMM-HHMM)
+input string Tuesday_CloseTime = "0455-0655";            // 火曜日 決済時間帯(HHMM-HHMM)
+input string Wednesday_CloseTime = "0455-0655";          // 水曜日 決済時間帯(HHMM-HHMM)
+input string Thursday_CloseTime = "0455-0655";           // 木曜日 決済時間帯(HHMM-HHMM)
+input string Friday_CloseTime = "0455-0655";             // 金曜日 決済時間帯(HHMM-HHMM)
+input string Saturday_CloseTime = "0455-0655";           // 土曜日 決済時間帯(HHMM-HHMM)
 input string Sunday_CloseTime = "0000-0000";             // 日曜日 決済時間帯(HHMM-HHMM)
 
 sinput string separator_tz = "=== タイムゾーン設定 ===";  // タイムゾーン設定
